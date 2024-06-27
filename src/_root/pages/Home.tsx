@@ -3,6 +3,8 @@ import { Models } from "appwrite";
 // import { useToast } from "@/components/ui/use-toast";
 import { Loader, PostCard, UserCard } from "@/components/shared";
 import { useGetRecentPosts, useGetUsers } from "@/lib/react-query/queries";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 
 const Home = () => {
   // const { toast } = useToast();
@@ -29,10 +31,19 @@ const Home = () => {
         </div>
       </div>
     );
-  }
+  };
+
+  useGSAP(() => {
+    gsap.to(".feed", {
+      ease: "power3.inOut",
+      opacity: 1,
+      y: 0,
+      duration: 2,
+    });
+  }, []);
 
   return (
-    <div className="flex flex-1">
+    <div className="feed flex flex-1 opacity-0 translate-y-10">
       <div className="home-container">
         <div className="home-posts">
           <h2 className="h3-bold md:h2-bold text-left w-full">Home Feed</h2>

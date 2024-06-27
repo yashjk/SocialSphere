@@ -6,6 +6,8 @@ import { Loader } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import { useSignOutAccount } from "@/lib/react-query/queries";
 import { useUserContext, INITIAL_USER } from "@/context/AuthContext";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 
 const LeftSidebar = () => {
   const navigate = useNavigate();
@@ -24,15 +26,24 @@ const LeftSidebar = () => {
     navigate("/sign-in");
   };
 
+  useGSAP(() => {
+    gsap.to(".leftsidebar", {
+      ease: "power3.inOut",
+      opacity: 1,
+      y: 0,
+      duration: 2,
+    });
+  }, []);
+
   return (
-    <nav className="leftsidebar">
+    <nav className="leftsidebar opacity-0 translate-y-10">
       <div className="flex flex-col gap-11">
         <Link to="/" className="flex gap-3 items-center">
           <img
             src="/assets/images/logo.svg"
             alt="logo"
-            width={170}
-            height={36}
+            width={300}
+            height={50}
           />
         </Link>
 

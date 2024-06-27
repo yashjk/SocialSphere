@@ -3,15 +3,27 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/shared/Loader";
 import { useToast } from "@/components/ui/use-toast";
 
-import { useCreateUserAccount, useSignInAccount } from "@/lib/react-query/queries";
+import {
+  useCreateUserAccount,
+  useSignInAccount,
+} from "@/lib/react-query/queries";
 import { SignupValidation } from "@/lib/validation";
 import { useUserContext } from "@/context/AuthContext";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 
 const SignupForm = () => {
   const { toast } = useToast();
@@ -29,17 +41,26 @@ const SignupForm = () => {
   });
 
   // Queries
-  const { mutateAsync: createUserAccount, isLoading: isCreatingAccount } = useCreateUserAccount();
-  const { mutateAsync: signInAccount, isLoading: isSigningInUser } = useSignInAccount();
+  const { mutateAsync: createUserAccount, isLoading: isCreatingAccount } =
+    useCreateUserAccount();
+  const { mutateAsync: signInAccount, isLoading: isSigningInUser } =
+    useSignInAccount();
 
+  useGSAP(() => {
+    gsap.to("#loader-box", {
+      repeat: -1,
+      rotation: 360,
+      duration: 3,
+    });
+  }, [isCreatingAccount || isSigningInUser || isUserLoading]);
   // Handler
   const handleSignup = async (user: z.infer<typeof SignupValidation>) => {
     try {
       const newUser = await createUserAccount(user);
 
       if (!newUser) {
-        toast({ title: "Sign up failed. Please try again.", });
-        
+        toast({ title: "Sign up failed. Please try again." });
+
         return;
       }
 
@@ -49,10 +70,10 @@ const SignupForm = () => {
       });
 
       if (!session) {
-        toast({ title: "Something went wrong. Please login your new account", });
-        
+        toast({ title: "Something went wrong. Please login your new account" });
+
         navigate("/sign-in");
-        
+
         return;
       }
 
@@ -63,8 +84,8 @@ const SignupForm = () => {
 
         navigate("/");
       } else {
-        toast({ title: "Login failed. Please try again.", });
-        
+        toast({ title: "Login failed. Please try again." });
+
         return;
       }
     } catch (error) {
@@ -143,24 +164,25 @@ const SignupForm = () => {
             )}
           />
 
-          <Button type="submit" className="shad-button_primary">
-            {isCreatingAccount || isSigningInUser || isUserLoading ? (
-              <div className="flex-center gap-2">
-                <Loader /> Loading...
-              </div>
-            ) : (
-              "Sign Up"
-            )}
-          </Button>
-
-          <p className="text-small-regular text-light-2 text-center mt-2">
-            Already have an account?
-            <Link
-              to="/sign-in"
-              className="text-primary-500 text-small-semibold ml-1">
-              Log in
-            </Link>
-          </p>
+          {isCreatingAccount || isSigningInUser || isUserLoading ? (
+            <div id="loader-box" className="flex-center gap-2">
+              Loading
+            </div>
+          ) : (
+            <>
+              <Button type="submit" className="shad-button_primary">
+                Sign Up
+              </Button>
+              <p className="text-small-regular text-light-2 text-center mt-2">
+                Already have an account?
+                <Link
+                  to="/sign-in"
+                  className="text-primary-500 text-small-semibold ml-1">
+                  Log in
+                </Link>
+              </p>
+            </>
+          )}
         </form>
       </div>
     </Form>
