@@ -1,6 +1,6 @@
 # SocialSphere
 
-## Steps to run the aplication
+### Installation
 - Clone the repository
 ```
 git clone https://github.com/yashjk/SocialSphere.git
