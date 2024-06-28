@@ -2,8 +2,14 @@
 
 ## Steps to run the aplication
 - Clone the repository
-  `git clone https://github.com/yashjk/SocialSphere.git`
+```
+git clone https://github.com/yashjk/SocialSphere.git
+```
 - Add packages
-  `yarn add`
+```
+yarn add
+```
 - Start development server
-  `yarn run dev`
+```
+yarn run dev
+```
