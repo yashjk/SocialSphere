@@ -35,7 +35,16 @@ const SigninForm = () => {
       rotation: 360,
       duration: 3,
     });
-  }, [isLoading || isUserLoading]);
+  }, [isLoading]);
+
+  useGSAP(() => {
+    gsap.to("#logo", {
+      ease: "power1.inOut",
+      opacity: 1,
+      y: 0,
+      duration: 2,
+    });
+  }, []);
 
   const form = useForm<z.infer<typeof SigninValidation>>({
     resolver: zodResolver(SigninValidation),
@@ -70,6 +79,12 @@ const SigninForm = () => {
   return (
     <Form {...form}>
       <div className="sm:w-420 flex-center flex-col">
+        <img
+          id="logo"
+          className="xl:hidden opacity-0 translate-y-10"
+          src="/assets/images/logo.svg"
+          alt="logo"
+        />
         <h2 className="h3-bold md:h2-bold pt-5 sm:pt-12">
           Log in to your account
         </h2>
