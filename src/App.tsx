@@ -18,6 +18,7 @@ import SigninForm from "@/_auth/forms/SigninForm";
 import { Toaster } from "@/components/ui/toaster";
 
 import "./globals.css";
+import * as Sentry from '@sentry/react';
 
 const App = () => {
   return (
@@ -48,4 +49,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Sentry.withProfiler(App);
